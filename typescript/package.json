@@ -17,6 +17,7 @@
   "devDependencies": {
     "@rollup/plugin-html": "^2.0.0",
     "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-replace": "^6.0.2",
     "@types/node": "^22.12.0",
     "esbuild": "^0.24.2",
     "postcss": "^8.5.1",

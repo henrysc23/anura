@@ -1,3 +1,4 @@
+import replace from '@rollup/plugin-replace';
 import esbuild from 'rollup-plugin-esbuild';
 import del from 'rollup-plugin-delete';
 import html from '@rollup/plugin-html';
@@ -5,14 +6,11 @@ import postcss from 'rollup-plugin-postcss';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-
 const distFolder = 'dist';
 
 const config = [
     {
-        // input file
         input: './src/index.ts',
-        // output file
         output: [
             {
                 dir: `./${distFolder}`,
@@ -22,29 +20,30 @@ const config = [
             },
         ],
         plugins: [
-            // delete dist folder before building
+            // 🔁 Inject env variables from Amplify into your bundle
+            replace({
+                preventAssignment: true,
+                'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
+                'import.meta.env.VITE_STUDY_ID': JSON.stringify(process.env.VITE_STUDY_ID),
+                'import.meta.env.VITE_LICENSE_KEY': JSON.stringify(process.env.VITE_LICENSE_KEY),
+            }),
             del({ targets: 'dist/*' }),
-            // resolve node modules
             nodeResolve(),
-            // transpile typescript to javascript
             esbuild({
                 target: 'ES2022',
                 minify: process.env.NODE_ENV === 'production',
             }),
-            // extract CSS to separate file
             postcss({ extract: true }),
-            // generate index.html file and add it to dist folder
             html({
                 fileName: 'index.html',
-                template: ({ bundle, files  }) => {
+                template: ({ bundle, files }) => {
                     return getHtmlTemplate(Object.keys(bundle)[0], files.css[0].fileName);
-               }
+                }
             })
         ]
     }
 ];
 
-// generate html template
 const getHtmlTemplate = (bundleFileName, cssfileName) => {
 return `
 <!DOCTYPE html>

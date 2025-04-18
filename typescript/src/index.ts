@@ -40,7 +40,7 @@ const toggleMeasurementButton = document.getElementById('toggle-measurement') as
 if (mediaElement && mediaElement instanceof HTMLDivElement) {
     const settings: Settings = {
         mediaElement,
-        assetFolder: 'https://unpkg.com/@nuralogix.ai/anura-web-core-sdk/lib/assets',
+        assetFolder: 'https://unpkg.com/@nuralogix.ai/anura-web-core-sdk@0.1.0-alpha.10/lib/assets',
         apiUrl: 'api.deepaffex.ai',
         mirrorVideo: true,
         displayMediaStream: true,

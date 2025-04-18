@@ -12,7 +12,7 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "@nuralogix.ai/anura-web-core-sdk": "^0.1.0-alpha.9"
+    "@nuralogix.ai/anura-web-core-sdk": "0.1.0-alpha.10"
   },
   "devDependencies": {
     "@rollup/plugin-html": "^2.0.0",

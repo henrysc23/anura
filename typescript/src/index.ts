@@ -230,30 +230,27 @@ if (mediaElement && mediaElement instanceof HTMLDivElement) {
         console.log('mediaElementResize', event);
     }
     
-    const licenseKey = import.meta.env.VITE_LICENSE_KEY;
-const apiBase = "https://api.deepaffex.ai";
-
-try {
-  const tokenRes = await fetch(`${apiBase}/v1/token`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ license: licenseKey })
-  });
-
-  const data = await tokenRes.json();
-
-  if (data.status === "200") {
-    const { token, refreshToken, studyId } = data;
-
-    await measurement.prepare(token, refreshToken, studyId);
-    await measurement.downloadAssets();
-  } else {
-    console.error("Failed to fetch token/studyId from DeepAffex", data);
-  }
-} catch (err) {
-  console.error("API call failed:", err);
-}
+    try {
+        const lambdaUrl = "https://c77ohoqqqpq5i2n5mbngnit6cy0lwqgu.lambda-url.us-east-1.on.aws/"; // replace with your actual URL
+        const response = await fetch(lambdaUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            license: "a632d426-355b-4b2a-956c-08250c8e6a2d"
+          })
+        });
+      
+        const data = await response.json();
+      
+        if (response.ok && data.token && data.refreshToken && data.deviceId) {
+          await measurement.prepare(data.token, data.refreshToken, data.deviceId);
+          await measurement.downloadAssets();
+        } else {
+          console.error("❌ Failed to prepare measurement:", data);
+        }
+      } catch (err) {
+        console.error("🔥 Lambda call failed:", err);
+      }
+      
 
 }

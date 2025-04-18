@@ -1,11 +1,20 @@
+/* Measurement Container */
 .measurement-container {
-    width: 1280px;
-    height: 720px;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: black;
+    margin: 0 auto;
+    position: relative;
 }
 
+/* Logo and Header */
 .logo-container {
     display: flex;
     margin-bottom: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .header {
@@ -13,9 +22,11 @@
     font-weight: 700;
     font-size: large;
     height: 128px;
+    display: flex;
+    align-items: center;
 }
 
-/* General Styles */
+/* General Styles for Inputs */
 button, select {
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -65,4 +76,28 @@ select:hover {
 select:focus {
     border-color: #0056b3;
     box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
+}
+
+/* Mobile Optimization */
+@media (max-width: 600px) {
+    .measurement-container {
+        aspect-ratio: 3 / 4;
+        height: auto;
+    }
+
+    .logo-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header {
+        font-size: 20px;
+        text-align: center;
+        height: auto;
+    }
+
+    button, select {
+        width: 100%;
+        font-size: 18px;
+    }
 }

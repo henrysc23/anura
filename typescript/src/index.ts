@@ -1,3 +1,14 @@
+const meta1 = document.createElement('meta');
+meta1.httpEquiv = "Cross-Origin-Opener-Policy";
+meta1.content = "same-origin";
+document.head.appendChild(meta1);
+
+const meta2 = document.createElement('meta');
+meta2.httpEquiv = "Cross-Origin-Embedder-Policy";
+meta2.content = "require-corp";
+document.head.appendChild(meta2);
+
+
 import "./styles.css"; // Rollup will process this
 
 import {

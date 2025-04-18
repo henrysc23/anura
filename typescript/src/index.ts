@@ -232,23 +232,24 @@ if (mediaElement && mediaElement instanceof HTMLDivElement) {
     
     const apiUrl = import.meta.env.VITE_API_URL;
 
-try {
-    const studyIdRes = await fetch(`https://${apiUrl}/studyId`);
-    const studyIdResponse = await studyIdRes.json();
-
-    const tokenRes = await fetch(`https://${apiUrl}/token`);
-    const tokenResponse = await tokenRes.json();
-
-    if (studyIdResponse.status === '200' && tokenResponse.status === '200') {
-        await measurement.prepare(
-            tokenResponse.token,
-            tokenResponse.refreshToken,
-            studyIdResponse.studyId
-        );
-        await measurement.downloadAssets();
-    } else {
-        console.error('Failed to get Study ID and Token pair');
+    try {
+        const studyIdRes = await fetch(`https://${apiUrl}/studyId`);
+        const studyIdResponse = await studyIdRes.json();
+    
+        const tokenRes = await fetch(`https://${apiUrl}/token`);
+        const tokenResponse = await tokenRes.json();
+    
+        if (studyIdResponse.status === '200' && tokenResponse.status === '200') {
+            await measurement.prepare(
+                tokenResponse.token,
+                tokenResponse.refreshToken,
+                studyIdResponse.studyId
+            );
+            await measurement.downloadAssets();
+        } else {
+            console.error('Failed to get Study ID and Token pair');
+        }
+    } catch (err) {
+        console.error('API call failed:', err);
     }
-} catch (err) {
-    console.error('API call
-
+}

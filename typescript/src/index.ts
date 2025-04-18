@@ -137,7 +137,9 @@ if (mediaElement && mediaElement instanceof HTMLDivElement) {
             await measurement.stopTracking();
             mask.setMaskVisibility(false);
         } else {
-            const success = await camera.start(1280, 720);
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const success = await camera.start(isMobile ? 640 : 1280, isMobile ? 480 : 720);
+
         }
     }
 

@@ -230,26 +230,30 @@ if (mediaElement && mediaElement instanceof HTMLDivElement) {
         console.log('mediaElementResize', event);
     }
     
-    const apiUrl = import.meta.env.VITE_API_URL;
+    const licenseKey = import.meta.env.VITE_LICENSE_KEY;
+const apiBase = "https://api.deepaffex.ai";
 
-    try {
-        const studyIdRes = await fetch(`https://${apiUrl}/studyId`);
-        const studyIdResponse = await studyIdRes.json();
-    
-        const tokenRes = await fetch(`https://${apiUrl}/token`);
-        const tokenResponse = await tokenRes.json();
-    
-        if (studyIdResponse.status === '200' && tokenResponse.status === '200') {
-            await measurement.prepare(
-                tokenResponse.token,
-                tokenResponse.refreshToken,
-                studyIdResponse.studyId
-            );
-            await measurement.downloadAssets();
-        } else {
-            console.error('Failed to get Study ID and Token pair');
-        }
-    } catch (err) {
-        console.error('API call failed:', err);
-    }
+try {
+  const tokenRes = await fetch(`${apiBase}/v1/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ license: licenseKey })
+  });
+
+  const data = await tokenRes.json();
+
+  if (data.status === "200") {
+    const { token, refreshToken, studyId } = data;
+
+    await measurement.prepare(token, refreshToken, studyId);
+    await measurement.downloadAssets();
+  } else {
+    console.error("Failed to fetch token/studyId from DeepAffex", data);
+  }
+} catch (err) {
+  console.error("API call failed:", err);
+}
+
 }

@@ -231,7 +231,7 @@ if (mediaElement && mediaElement instanceof HTMLDivElement) {
     }
     
     try {
-        const lambdaUrl = "https://c77ohoqqqpq5i2n5mbngnit6cy0lwqgu.lambda-url.us-east-1.on.aws/"; // replace with your actual URL
+        const lambdaUrl = "https://c77ohoqqqpq5i2n5mbngnit6cy0lwqgu.lambda-url.us-east-1.on.aws/";
         const response = await fetch(lambdaUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -241,16 +241,23 @@ if (mediaElement && mediaElement instanceof HTMLDivElement) {
         });
       
         const data = await response.json();
+        console.log("🧾 Lambda Response:", data);
       
-        if (response.ok && data.token && data.refreshToken && data.deviceId) {
-          await measurement.prepare(data.token, data.refreshToken, data.deviceId);
+        // ✅ Use hardcoded Study ID for now
+        const studyId = "7930962e-1e47-4230-a3bf-7ffea2fa0726";
+      
+        if (response.ok && data.token && data.refreshToken) {
+          console.log("✅ Preparing with Study ID:", studyId);
+          await measurement.prepare(data.token, data.refreshToken, studyId);
           await measurement.downloadAssets();
         } else {
           console.error("❌ Failed to prepare measurement:", data);
         }
+      
       } catch (err) {
         console.error("🔥 Lambda call failed:", err);
       }
+      
       
 
 }

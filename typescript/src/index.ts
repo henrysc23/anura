@@ -230,13 +230,14 @@ if (mediaElement && mediaElement instanceof HTMLDivElement) {
         console.log('mediaElementResize', event);
     }
     
-    const apiUrl = 'http://localhost:7000/api';
+    const apiUrl = import.meta.env.VITE_API_URL;
 
-    const studyId = await fetch(`${apiUrl}/studyId`);
-    const studyIdResponse = await studyId.json();
+try {
+    const studyIdRes = await fetch(`https://${apiUrl}/studyId`);
+    const studyIdResponse = await studyIdRes.json();
 
-    const token = await fetch(`${apiUrl}/token`);
-    const tokenResponse = await token.json();
+    const tokenRes = await fetch(`https://${apiUrl}/token`);
+    const tokenResponse = await tokenRes.json();
 
     if (studyIdResponse.status === '200' && tokenResponse.status === '200') {
         await measurement.prepare(
@@ -248,4 +249,6 @@ if (mediaElement && mediaElement instanceof HTMLDivElement) {
     } else {
         console.error('Failed to get Study ID and Token pair');
     }
-}
+} catch (err) {
+    console.error('API call
+
